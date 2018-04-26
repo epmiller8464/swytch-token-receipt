@@ -1,0 +1,85 @@
+App = {
+  web3Provider: null,
+  contracts: {},
+
+  init: function () {
+    return App.initWeb3()
+  },
+
+  initWeb3: function () {
+    // Initialize web3 and set the provider to the testRPC.
+    if (typeof web3 !== 'undefined') {
+      App.web3Provider = web3.currentProvider
+      web3 = new Web3(web3.currentProvider)
+    } else {
+      // set the provider you want from Web3.providers
+      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545')
+      web3 = new Web3(App.web3Provider)
+    }
+
+    return App.initContract()
+  },
+
+  initContract: function () {
+    $.getJSON('SwytchReceiptToken.json', function (data) {
+      // Get the necessary contract artifact file and instantiate it with truffle-contract.
+      var SwytchReceiptTokenArtifact = data
+      App.contracts.SwytchReceiptToken = TruffleContract(SwytchReceiptTokenArtifact)
+
+      // Set the provider for our contract.
+      App.contracts.SwytchReceiptToken.setProvider(App.web3Provider)
+    })
+    return App.bindEvents()
+  },
+
+  bindEvents: function () {
+    $(document).on('click', '#viewBalance', App.viewBalance)
+    $(document).on('click', '#acctButton', App.viewMainPage)
+  },
+
+  getBalance: function(account){
+    var tutorialTokenInstance
+    account = $.trim(account)
+    console.log('account: '+ account)
+
+    App.contracts.SwytchReceiptToken.deployed().then(function (instance) {
+      tutorialTokenInstance = instance
+      tutorialTokenInstance.balanceOf(account).then(async (bal) => {
+        $('#BalDev').show()
+        $('#BalAsk').hide()
+        $('#acctButton').show()
+        $('#Balance').text(bal.toString(10))
+        $('#Address').text(account)
+        console.log('Balance updated: '+ bal)
+        //history.pushState(null, null, `index.html?address=${account}`)
+      }).catch(function (err) {
+        alert(`Could not load details for address ${account}`)
+        console.log(err.message)
+      })
+    }).catch(function (err) {
+      alert(`Could not connect to ETH network`)
+      console.log(err.message)
+    })
+
+  },
+  viewBalance: function (event) {
+      event.preventDefault()
+    var account = $('#MyAddress').val().toUpperCase()
+      App.getBalance(account)
+  },
+  viewMainPage: function (event) {
+    event.preventDefault()
+    history.pushState(null, null, 'index.html')
+    $('#BalDev').hide()
+    $('#acctButton').hide()
+    $('#BalAsk').show()
+    $('#Balance').text("")
+    $('#Address').text("")
+  }
+}
+
+$(function () {
+  $(window).load(function () {
+    App.init()
+  })
+})

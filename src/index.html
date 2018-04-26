@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Swytch Receipt</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    html {
+      background: #ffffff;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="icon" href="data/cropped-swytch_logo_white-32x32.png" sizes="32x32">
+</head>
+<body style="background-color:rgba(0, 0, 0, 0.0);">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3 m-auto text-center">
+      <div><img src="data/swytch_icon.png"  height="64px" style="display: inline" /></div><br />
+      <h1 class="text-center" style="display: inline" > Swytch Receipt Tokens</h1>
+      <hr/>
+      <br/>
+    </div>
+  </div>
+
+  <div id="petsRow" class="row">
+    <div class="col-sm-8 col-sm-push-3 col-md-6 col-md-push-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Reserved SET Tokens</h3>
+        </div>
+        <div class="panel-body">
+          <div id="BalAsk">
+            <input type="text" class="form-control" id="MyAddress" placeholder="Address" /> <br />
+            <button class="btn btn-primary center-block" id="viewBalance" type="button">View Balance</button>
+          </div>
+          <div id="BalDev" style="display:none">
+            <strong>Address</strong>: <span id="Address"></span> <br/>
+            <strong>Balance</strong>: <span id="Balance"></span> SET<br/>
+          </div>
+        </div>
+      </div>
+      <button style="display:none" id="acctButton" class="btn btn-primary" type="button">< Change Address</button>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/web3.min.js"></script>
+<script src="js/truffle-contract.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
