@@ -1,7 +1,7 @@
 App = {
   web3Provider: null,
   contracts: {},
-
+  walletData: {},
   init: function () {
     return App.initWeb3()
   },
@@ -16,7 +16,10 @@ App = {
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545')
       web3 = new Web3(App.web3Provider)
     }
-
+    $.getJSON('rfs.json', function(data){
+      App.walletData = data
+      console.log(`Wallet data: ${data}`)
+    })
     return App.initContract()
   },
 
@@ -48,10 +51,13 @@ App = {
         $('#BalDev').show()
         $('#BalAsk').hide()
         $('#acctButton').show()
-        $('#Balance').text(bal.toString(10))
+        $('#Balance').text(bal.toString(10) / 10 ** 18)
         $('#Address').text(account)
-        console.log('Balance updated: '+ bal)
-        //history.pushState(null, null, `index.html?address=${account}`)
+        if (account in App.walletData){
+          $('#AdditionalDetails').show()
+          $('#Contribution').text(App.walletData[account]['Contribution'])
+          $('#USD').text(App.walletData[account]['USD'])
+        }
       }).catch(function (err) {
         alert(`Could not load details for address ${account}`)
         console.log(err.message)
@@ -64,17 +70,20 @@ App = {
   },
   viewBalance: function (event) {
       event.preventDefault()
-    var account = $('#MyAddress').val().toUpperCase()
+    var account = $('#MyAddress').val()
       App.getBalance(account)
   },
   viewMainPage: function (event) {
     event.preventDefault()
     history.pushState(null, null, 'index.html')
     $('#BalDev').hide()
+    $('#AdditionalDetails').hide()
     $('#acctButton').hide()
     $('#BalAsk').show()
     $('#Balance').text("")
     $('#Address').text("")
+    $('#Contribution').text("")
+    $('#USD').text("")
   }
 }
 
