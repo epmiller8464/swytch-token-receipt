@@ -2,9 +2,9 @@ pragma solidity ^0.4.21;
 
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
-import "./Utils.sol";
 
-contract SwytchReceiptToken is Utils, Ownable, StandardToken {
+
+contract SwytchReceiptToken is Ownable, StandardToken {
 
     string public constant name = "Receipt From Swytch"; // solium-disable-line uppercase
     string public constant symbol = "RFS"; // solium-disable-line uppercase
@@ -21,7 +21,7 @@ contract SwytchReceiptToken is Utils, Ownable, StandardToken {
     }
 
     /**
-     * @dev Constructor that gives msg.sender all of existing tokens.
+       * @dev Constructor that gives msg.sender all of existing tokens.
      */
     function SwytchReceiptToken() public {
         totalSupply_ = INITIAL_SUPPLY;
@@ -33,7 +33,7 @@ contract SwytchReceiptToken is Utils, Ownable, StandardToken {
         return super.transfer(_to, _value);
     }
 
-    function transferFrom(address _from, address _to, uint256 _value) public transfersAllowed onlyOwner returns (bool) {
+    function transferFrom(address _from, address _to, uint256 _value) public transfersAllowed returns (bool) {
         return super.transferFrom(_from, _to, _value);
     }
 
